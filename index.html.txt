@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guilherme Godoy — Analista de Operações & Automação</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #050816;
+    color: #F5F7FB;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    background:
+      radial-gradient(900px 420px at 72% 18%, rgba(255,120,180,.14) 0%, transparent 42%),
+      radial-gradient(800px 380px at 35% 20%, rgba(35,110,255,.14) 0%, transparent 42%),
+      linear-gradient(180deg, #0A0F24 0%, #070B1D 45%, #050816 100%);
+  }
+
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .3;
+    background-image: radial-gradient(rgba(255,255,255,.06) .8px, transparent .8px);
+    background-size: 24px 24px;
+  }
+
+  /* PROGRESS */
+  .progress {
+    position: fixed; top: 0; left: 0;
+    height: 3px; width: 0;
+    z-index: 1000;
+    background: linear-gradient(90deg, #2E6BFF, #C86DD7, #2E6BFF);
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+    transition: width .2s ease;
+  }
+
+  /* TOC */
+  .toc {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 240px;
+    padding: 32px 24px 24px;
+    background: rgba(5,8,22,.6);
+    backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(255,255,255,.05);
+    z-index: 100;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,.08) transparent;
+  }
+  .toc::-webkit-scrollbar { width: 4px; }
+  .toc::-webkit-scrollbar-track { background: transparent; }
+  .toc::-webkit-scrollbar-thumb { background: rgba(255,255,255,.08); border-radius: 2px; }
+  .toc::-webkit-scrollbar-thumb:hover { background: rgba(46,107,255,.3); }
+
+  .toc .toc-brand {
+    font-size: 13px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: #7E879B;
+    margin-bottom: 6px;
+  }
+  .toc .toc-name {
+    font-size: 16px; font-weight: 800;
+    margin-bottom: 28px;
+    letter-spacing: -.01em;
+    background: linear-gradient(135deg, #2E6BFF, #C86DD7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .toc ul { list-style: none; }
+  .toc li { margin-bottom: 8px; }
+  .toc a {
+    display: block;
+    padding: 8px 14px;
+    border-radius: 10px;
+    color: #AAB3C5;
+    font-size: 14px; font-weight: 500;
+    text-decoration: none;
+    transition: all .3s ease;
+    border-left: 2px solid transparent;
+  }
+  .toc a:hover { color: #F5F7FB; background: rgba(255,255,255,.03); transform: translateX(2px); }
+  .toc a.active { color: #8FAEFF; background: rgba(46,107,255,.08); border-left-color: #2E6BFF; }
+
+  /* CONTENT */
+  .content {
+    margin-left: 240px;
+    padding: 80px 64px 120px;
+    max-width: 1100px;
+    margin-right: auto;
+    margin-left: calc(240px + max(0px, (100vw - 240px - 1100px) / 2));
+  }
+
+  section {
+    margin-bottom: 100px;
+    scroll-margin-top: 40px;
+  }
+
+  section h2 {
+    font-size: clamp(36px, 5vw, 54px);
+    font-weight: 800;
+    letter-spacing: -.025em;
+    margin-bottom: 32px;
+  }
+
+  /* HERO */
+  #hero {
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 0;
+  }
+  #hero h1 {
+    font-size: clamp(48px, 7vw, 84px);
+    font-weight: 900;
+    letter-spacing: -.03em;
+    line-height: 1.08;
+    margin-bottom: 20px;
+  }
+  #hero .hero-title {
+    font-size: clamp(20px, 2.5vw, 28px);
+    color: #AAB3C5;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  #hero .hero-tagline {
+    font-size: clamp(16px, 1.8vw, 20px);
+    color: #7E879B;
+    max-width: 600px;
+    margin: 0 auto 24px;
+    line-height: 1.5;
+  }
+  #hero .hero-loc {
+    font-size: 14px;
+    color: #7E879B;
+    letter-spacing: .05em;
+    margin-top: 16px;
+  }
+
+  /* PHOTO */
+  .photo-ring {
+    position: relative;
+    width: 260px; height: 260px;
+    margin: 0 auto 32px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .photo-ring .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(46,107,255,.18);
+    animation: pulse 5s ease-in-out infinite;
+  }
+  .photo-ring .ring:nth-child(1) { width: 200px; height: 200px; }
+  .photo-ring .ring:nth-child(2) { width: 240px; height: 240px; animation-delay: .6s; border-color: rgba(200,109,215,.16); }
+  .photo-ring .ring:nth-child(3) { width: 280px; height: 280px; animation-delay: 1.2s; }
+  .photo-ring .photo {
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 20px 50px rgba(46,107,255,.35), 0 0 60px rgba(200,109,215,.2);
+  }
+  .photo-ring .photo img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: url(#duotone) contrast(1.05) brightness(1.02);
+    transition: filter .6s ease;
+  }
+  .photo-ring:hover .photo img { filter: none; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: .3; transform: scale(1) }
+    50% { opacity: .7; transform: scale(1.04) }
+  }
+
+  /* GRADIENTS & DECORATIVE */
+  .gt {
+    background: linear-gradient(135deg, #2E6BFF 0%, #C86DD7 50%, #2E6BFF 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s linear infinite;
+  }
+  @keyframes shimmer { 0% { background-position: -200% center } 100% { background-position: 200% center } }
+
+  .gl {
+    width: 72px; height: 4px; border-radius: 2px;
+    background: linear-gradient(90deg, #2E6BFF, #C86DD7);
+    margin-bottom: 22px;
+    animation: lineG .8s ease both;
+    transform-origin: left;
+  }
+  .gl.ce { margin: 0 auto 22px; transform-origin: center; }
+  @keyframes lineG { from { transform: scaleX(0) } to { transform: scaleX(1) } }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 20px; border-radius: 999px;
+    background: rgba(46,107,255,.08);
+    border: 1px solid rgba(46,107,255,.2);
+    font-size: 13px; font-weight: 600; color: #8FAEFF;
+    letter-spacing: .05em; text-transform: uppercase;
+  }
+
+  /* CARDS */
+  .card {
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 22px;
+    box-shadow: 0 16px 48px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.04);
+    padding: 32px 28px;
+    backdrop-filter: blur(8px);
+    transition: transform .5s cubic-bezier(.22,1,.36,1), border-color .4s ease, box-shadow .4s ease, background .4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 22px;
+    padding: 1px;
+    background: linear-gradient(135deg, transparent 40%, rgba(46,107,255,.4), rgba(200,109,215,.4), transparent 60%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity .5s ease;
+    pointer-events: none;
+  }
+  .card:hover { border-color: rgba(46,107,255,.25); transform: translateY(-6px) scale(1.01); box-shadow: 0 32px 70px rgba(0,0,0,.55), 0 0 40px rgba(46,107,255,.12); background: rgba(255,255,255,.045); }
+  .card:hover::before { opacity: 1; }
+
+  .cp {
+    background: linear-gradient(145deg, rgba(18,11,43,.95) 0%, rgba(10,15,36,.98) 55%, rgba(5,8,22,1) 100%);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 22px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.45), 0 0 40px rgba(46,107,255,.08);
+    padding: 34px 30px;
+    backdrop-filter: blur(10px);
+    transition: transform .5s cubic-bezier(.22,1,.36,1), border-color .4s ease, box-shadow .4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .cp::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(46,107,255,.08), transparent 40%);
+    opacity: 0;
+    transition: opacity .5s ease;
+    pointer-events: none;
+  }
+  .cp:hover { border-color: rgba(46,107,255,.3); transform: translateY(-6px) scale(1.015); box-shadow: 0 36px 80px rgba(0,0,0,.6), 0 0 60px rgba(46,107,255,.18); }
+  .cp:hover::before { opacity: 1; }
+
+  /* SUPERPODERES */
+  .sp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .sp-card {
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sp-card .sp-ic {
+    width: 48px; height: 48px; border-radius: 14px;
+    background: rgba(46,107,255,.1);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+    transition: transform .5s cubic-bezier(.22,1,.36,1), box-shadow .4s ease, background .4s ease;
+  }
+  .sp-card .sp-ic svg { width: 24px; height: 24px; color: #2E6BFF; transition: transform .4s ease; }
+  .sp-card:hover .sp-ic { transform: rotate(-8deg) scale(1.1); box-shadow: 0 10px 30px rgba(46,107,255,.25); background: rgba(46,107,255,.18); }
+  .sp-card:hover .sp-ic svg { transform: scale(1.1); }
+  .sp-card h3 { font-size: 20px; margin-bottom: 8px; font-weight: 700; transition: color .3s ease; }
+  .sp-card:hover h3 {
+    background: linear-gradient(135deg, #2E6BFF, #C86DD7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .sp-card p { font-size: 14px; color: #AAB3C5; }
+
+  .sp-card:nth-child(2) .sp-ic { background: rgba(91,63,214,.1); }
+  .sp-card:nth-child(2) .sp-ic svg { color: #5B3FD6; }
+  .sp-card:nth-child(2):hover .sp-ic { background: rgba(91,63,214,.18); box-shadow: 0 10px 30px rgba(91,63,214,.25); }
+  .sp-card:nth-child(3) .sp-ic { background: rgba(200,109,215,.1); }
+  .sp-card:nth-child(3) .sp-ic svg { color: #C86DD7; }
+  .sp-card:nth-child(3):hover .sp-ic { background: rgba(200,109,215,.18); box-shadow: 0 10px 30px rgba(200,109,215,.25); }
+  .sp-card:nth-child(4) .sp-ic { background: rgba(94,232,154,.1); }
+  .sp-card:nth-child(4) .sp-ic svg { color: #5EE89A; }
+  .sp-card:nth-child(4):hover .sp-ic { background: rgba(94,232,154,.18); box-shadow: 0 10px 30px rgba(94,232,154,.25); }
+
+  /* TIMELINE */
+  .tl {
+    position: relative;
+    padding-left: 40px;
+  }
+  .tl::before {
+    content: '';
+    position: absolute;
+    left: 12px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #2E6BFF 0%, #5B3FD6 50%, #C86DD7 100%);
+    opacity: .3;
+  }
+  .tl-item { position: relative; margin-bottom: 40px; padding-bottom: 8px; }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -34px; top: 8px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #2E6BFF;
+    box-shadow: 0 0 14px rgba(46,107,255,.6), 0 0 0 4px rgba(5,8,22,1);
+  }
+  .tl-item .tl-period { font-size: 12px; font-weight: 700; color: #7E879B; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
+  .tl-item .tl-role { font-size: 20px; font-weight: 700; color: #F5F7FB; margin-bottom: 4px; }
+  .tl-item .tl-company { font-size: 15px; color: #8FAEFF; font-weight: 600; margin-bottom: 12px; }
+  .tl-item ul { list-style: none; margin-top: 10px; }
+  .tl-item ul li { position: relative; padding-left: 18px; margin-bottom: 8px; color: #AAB3C5; font-size: 14px; line-height: 1.6; }
+  .tl-item ul li::before { content: ''; position: absolute; left: 0; top: 9px; width: 6px; height: 6px; border-radius: 50%; background: rgba(200,109,215,.6); }
+
+  /* CASES */
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .case-card {
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .case-card .case-metric {
+    font-size: 54px; font-weight: 900;
+    letter-spacing: -.03em; line-height: 1;
+    background: linear-gradient(135deg, #2E6BFF, #C86DD7, #2E6BFF);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+    transition: background-position .8s ease, transform .4s cubic-bezier(.22,1,.36,1);
+  }
+  .case-card:hover .case-metric { background-position: 200% center; transform: scale(1.05); }
+  .case-card .case-title { font-size: 18px; font-weight: 700; color: #F5F7FB; }
+  .case-card .case-ctx { font-size: 14px; color: #AAB3C5; line-height: 1.5; }
+
+  /* PILLS */
+  .pill {
+    display: inline-flex; align-items: center;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    color: #AAB3C5;
+    font-size: 13px; font-weight: 500;
+    margin: 4px 6px 4px 0;
+    transition: all .3s ease;
+  }
+  .pill:hover { background: rgba(46,107,255,.1); border-color: rgba(46,107,255,.3); color: #F5F7FB; }
+  .pill.highlight { background: rgba(46,107,255,.1); border-color: rgba(46,107,255,.3); color: #8FAEFF; }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .contact-card {
+    padding: 22px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: transform .5s cubic-bezier(.22,1,.36,1), border-color .4s ease, box-shadow .4s ease, background .4s ease;
+    min-width: 0;
+  }
+  .contact-card:hover { border-color: rgba(46,107,255,.4); transform: translateY(-4px) scale(1.02); box-shadow: 0 16px 40px rgba(46,107,255,.15); background: rgba(46,107,255,.04); }
+  .contact-card .ct-ic {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    background: rgba(46,107,255,.1);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: transform .4s cubic-bezier(.22,1,.36,1), background .3s ease;
+  }
+  .contact-card:hover .ct-ic { background: rgba(46,107,255,.2); transform: rotate(-6deg) scale(1.08); }
+  .contact-card .ct-ic svg { width: 20px; height: 20px; color: #8FAEFF; }
+  .contact-card .ct-info { min-width: 0; flex: 1; }
+  .contact-card .ct-info .ct-lbl { font-size: 11px; color: #7E879B; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+  .contact-card .ct-info .ct-val { font-size: 13px; color: #F5F7FB; font-weight: 600; overflow-wrap: anywhere; line-height: 1.4; }
+  .contact-card .ct-info .ct-val a { color: #F5F7FB; display: inline-block; max-width: 100%; overflow-wrap: anywhere; }
+  .contact-card .ct-info .ct-val a:hover { color: #8FAEFF; }
+
+  /* STATS GRID */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 24px;
+    max-width: 780px;
+    margin: 48px auto 0;
+  }
+  .stats-grid > div { transition: transform .4s ease; cursor: default; }
+  .stats-grid > div:hover .stat-big { transform: scale(1.12) translateY(-4px); }
+  .stats-grid > div:hover .stat-label { color: #F5F7FB; }
+  .stat-big {
+    font-size: 58px; font-weight: 900;
+    letter-spacing: -.03em; line-height: 1.1;
+    margin-bottom: 10px;
+    display: inline-block;
+    transition: transform .4s cubic-bezier(.22,1,.36,1), filter .4s ease;
+  }
+  .stat-big.blue { color: #2E6BFF; }
+  .stat-big.purple { color: #5B3FD6; }
+  .stat-big.pink { color: #C86DD7; }
+  .stat-big.green { color: #5EE89A; }
+  .stat-label { font-size: 13px; color: #7E879B; letter-spacing: .05em; text-transform: uppercase; font-weight: 600; transition: color .3s ease; }
+
+  /* ANIMAÇÕES */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(35px) } to { opacity: 1; transform: translateY(0) } }
+  @keyframes fadeScale { from { opacity: 0; transform: scale(.92) } to { opacity: 1; transform: scale(1) } }
+  .au { opacity: 0; animation: fadeUp .8s ease both; }
+  .as { opacity: 0; animation: fadeScale .8s ease both; }
+  .au.in-view, .as.in-view { animation-play-state: running; }
+  .d1 { animation-delay: .1s }
+  .d2 { animation-delay: .22s }
+  .d3 { animation-delay: .34s }
+  .d4 { animation-delay: .46s }
+  .d5 { animation-delay: .58s }
+  .d6 { animation-delay: .7s }
+
+  /* BOTÕES FLUTUANTES */
+  .fs-btn, .print-btn {
+    position: fixed;
+    z-index: 999;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    color: #7E879B;
+    padding: 12px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+    transition: all .3s ease;
+    backdrop-filter: blur(6px);
+    letter-spacing: .04em; text-transform: uppercase;
+  }
+  .fs-btn { top: 20px; right: 20px; }
+  .print-btn { top: 20px; right: 150px; }
+  .fs-btn:hover, .print-btn:hover { background: rgba(255,255,255,.08); color: #F5F7FB; border-color: rgba(46,107,255,.3); }
+  .fs-btn svg, .print-btn svg { width: 16px; height: 16px; }
+
+  /* FORMAÇÃO */
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .edu-item { padding: 24px; }
+  .edu-item .edu-course { font-size: 16px; font-weight: 700; color: #F5F7FB; margin-bottom: 6px; }
+  .edu-item .edu-inst { font-size: 14px; color: #8FAEFF; font-weight: 600; margin-bottom: 4px; }
+  .edu-item .edu-period { font-size: 12px; color: #7E879B; letter-spacing: .06em; text-transform: uppercase; }
+
+  /* IDIOMAS */
+  .lang-grid { display: flex; gap: 16px; flex-wrap: wrap; }
+  .lang-item {
+    padding: 18px 24px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.07);
+    display: flex; flex-direction: column; gap: 8px;
+    min-width: 160px;
+    transition: all .3s ease;
+  }
+  .lang-item:hover { border-color: rgba(46,107,255,.3); background: rgba(46,107,255,.05); transform: translateY(-3px); }
+  .lang-name { font-size: 18px; font-weight: 700; color: #F5F7FB; }
+  .lang-level { font-size: 12px; color: #7E879B; text-transform: uppercase; letter-spacing: .08em; }
+  .lang-dots { display: flex; gap: 5px; margin-top: 4px; }
+  .lang-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.1); }
+  .lang-dot.filled { background: #2E6BFF; box-shadow: 0 0 6px rgba(46,107,255,.5); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .toc {
+      position: sticky; top: 0; left: auto;
+      width: 100%; height: auto;
+      padding: 16px 20px;
+      display: flex; align-items: center; gap: 16px;
+      overflow-x: auto;
+      border-right: none;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .toc ul { display: flex; gap: 6px; }
+    .toc li { margin: 0; }
+    .toc .toc-name, .toc .toc-brand { display: none; }
+    .content { margin-left: 0; margin-right: 0; padding: 40px 24px 80px; max-width: 100%; }
+  }
+
+  /* PRINT */
+  @media print {
+    body::before, body::after { display: none; }
+    body { background: #0A0F24; }
+    .toc, .fs-btn, .print-btn, .progress { display: none; }
+    .content { margin-left: 0; padding: 24px; max-width: 100%; }
+    section { margin-bottom: 40px; page-break-inside: avoid; }
+    .photo-ring .ring { display: none; }
+    .au, .as { opacity: 1; animation: none; }
+    .card, .cp { page-break-inside: avoid; break-inside: avoid; }
+    h1, h2, h3 { page-break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SVG Duotone Filter -->
+<svg width="0" height="0" style="position:absolute">
+  <filter id="duotone">
+    <feColorMatrix type="matrix" values=".33 .33 .33 0 0
+                                         .33 .33 .33 0 0
+                                         .33 .33 .33 0 0
+                                         0 0 0 1 0"/>
+    <feComponentTransfer color-interpolation-filters="sRGB">
+      <feFuncR tableValues="0.18 0.78"/>
+      <feFuncG tableValues="0.12 0.43"/>
+      <feFuncB tableValues="0.35 0.84"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
+<div class="progress" id="prog"></div>
+
+<!-- TOC -->
+<aside class="toc">
+  <div class="toc-brand">Portfólio</div>
+  <div class="toc-name">Guilherme Godoy</div>
+  <ul>
+    <li><a href="#hero">Início</a></li>
+    <li><a href="#superpoderes">Competências</a></li>
+    <li><a href="#cases">Destaques</a></li>
+    <li><a href="#trajetoria">Trajetória</a></li>
+    <li><a href="#formacao">Formação</a></li>
+    <li><a href="#idiomas">Idiomas</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="content">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="photo-ring as">
+      <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+      <div class="photo">
+        <img src="https://i.imgur.com/placeholder.jpg" alt="Guilherme Godoy" onerror="this.parentElement.outerHTML='<div class=\'photo-initials\'>GG</div>'">
+      </div>
+    </div>
+
+    <div class="badge au d1">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Disponível para oportunidades
+    </div>
+
+    <h1 class="au d2"><span class="gt">Guilherme</span> Godoy</h1>
+    <p class="hero-title au d3">Analista de Operações Bancárias & Automação</p>
+    <p class="hero-tagline au d4">Especialista em processos financeiros, SAP e automação com IA — transformando operações complexas em entregas precisas e escaláveis.</p>
+    <p class="hero-loc au d5">📍 Brazil &nbsp;|&nbsp; IBM Consulting</p>
+
+    <div class="stats-grid au d6">
+      <div>
+        <div class="stat-big blue">7+</div>
+        <div class="stat-label">Anos de carreira</div>
+      </div>
+      <div>
+        <div class="stat-big purple">2</div>
+        <div class="stat-label">Grandes bancos atendidos</div>
+      </div>
+      <div>
+        <div class="stat-big pink">SAP</div>
+        <div class="stat-label">Sistema dominado</div>
+      </div>
+      <div>
+        <div class="stat-big green">IA</div>
+        <div class="stat-label">Automação aplicada</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUPERPODERES -->
+  <section id="superpoderes">
+    <div class="gl au"></div>
+    <h2 class="au d1">Competências <span class="gt">Dominantes</span></h2>
+    <div class="sp-grid">
+      <div class="card sp-card au d2">
+        <div class="sp-ic">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>Análise SAP</h3>
+        <p>Domínio completo de lançamentos, análise e processamento de pagamentos imobiliários no sistema SAP — IPTUS, aluguéis, condomínios e taxas bancárias.</p>
+      </div>
+      <div class="card sp-card au d3">
+        <div class="sp-ic">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <h3>Gestão de Poderes</h3>
+        <p>Controle de acessos, poderes e permissões em operações de varejo e PF — conformidade, qualidade da informação e suporte a sistemas críticos.</p>
+      </div>
+      <div class="card sp-card au d4">
+        <div class="sp-ic">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        </div>
+        <h3>Automação com IA</h3>
+        <p>Criação de workflows no n8n e desenvolvimento de Agentes de IA para substituir triagens manuais e otimizar processos operacionais em escala.</p>
+      </div>
+      <div class="card sp-card au d5">
+        <div class="sp-ic">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <h3>Análise Documental</h3>
+        <p>Análise criteriosa de contratos e comprovantes para abertura e fechamento de contas — garantindo conformidade com critérios regulatórios e processuais.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASES -->
+  <section id="cases">
+    <div class="gl au"></div>
+    <h2 class="au d1">Cases de <span class="gt">Destaque</span></h2>
+    <div class="cases-grid">
+      <div class="cp case-card au d2">
+        <div class="case-metric">100%</div>
+        <div class="case-title">Cobertura de Pagamentos Imobiliários — Santander</div>
+        <div class="case-ctx">Responsável por toda a cadeia de pagamentos de imóveis do banco Santander via SAP: IPTUS, aluguéis, condomínios e taxas, com contato direto e diário com o cliente.</div>
+      </div>
+      <div class="cp case-card au d3">
+        <div class="case-metric">+7 anos</div>
+        <div class="case-title">Operação Contínua em Projeto Bancário Crítico</div>
+        <div class="case-ctx">Atuação ininterrupta de jan/2019 a abr/2026 no Projeto Santander, absorvendo mudanças de sistema, novos desafios e garantindo performance coordenada.</div>
+      </div>
+      <div class="cp case-card au d4">
+        <div class="case-metric">IA</div>
+        <div class="case-title">Automação de Triagens Manuais — Projeto Itaú</div>
+        <div class="case-ctx">Implementação de ferramentas de IA para processamento e amostragem de dados em triagens anteriormente realizadas de forma manual, aumentando eficiência operacional.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAJETÓRIA -->
+  <section id="trajetoria">
+    <div class="gl au"></div>
+    <h2 class="au d1">Trajetória <span class="gt">Profissional</span></h2>
+    <div class="tl">
+      <div class="tl-item au d2">
+        <div class="tl-period">Abr 2026 — Presente</div>
+        <div class="tl-role">Analista em Poderes — Varejo e PF</div>
+        <div class="tl-company">IBM, LTDA — Projeto Itaú · Brasil</div>
+        <ul>
+          <li>Gestão de poderes, acessos e permissões no contexto de abertura de contas de varejo e pessoa física.</li>
+          <li>Manutenção, alimentação e suporte dos sistemas operacionais, garantindo conformidade e qualidade das informações.</li>
+          <li>Utilização de ferramentas de IA para otimizar a adaptação de informações em triagens anteriormente manuais.</li>
+        </ul>
+      </div>
+      <div class="tl-item au d3">
+        <div class="tl-period">Mai 2021 — Abr 2026</div>
+        <div class="tl-role">Analista SAP — Operações Imobiliárias</div>
+        <div class="tl-company">IBM Brasil — Projeto Santander · Brasil</div>
+        <ul>
+          <li>Responsável por todos os pagamentos de imóveis do banco Santander: IPTUS, aluguéis, condomínios, taxas e encargos.</li>
+          <li>Análise de comprovantes e organização documental no sistema SAP, atuando como ponto final da cadeia de pagamentos.</li>
+          <li>Contato direto e diário com o cliente, garantindo rastreabilidade e precisão em cada lançamento.</li>
+        </ul>
+      </div>
+      <div class="tl-item au d4">
+        <div class="tl-period">Jan 2019 — Mai 2021</div>
+        <div class="tl-role">Analista — Início de Carreira</div>
+        <div class="tl-company">IBM Brasil — Projeto Santander · Brasil</div>
+        <ul>
+          <li>Integração às rotinas do Projeto Santander, absorvendo processos SAP e construindo base técnica em operações bancárias.</li>
+          <li>Suporte a mudanças de sistema e adaptação a novos desafios com postura cooperativa e orientada a desempenho.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMAÇÃO -->
+  <section id="formacao">
+    <div class="gl au"></div>
+    <h2 class="au d1">Formação & <span class="gt">Certificações</span></h2>
+    <div class="edu-grid">
+      <div class="card edu-item au d2">
+        <div class="edu-course">Fundamentos do n8n e Agentes de IA</div>
+        <div class="edu-inst">Formação Técnica</div>
+        <div class="edu-period">Recente</div>
+      </div>
+      <div class="card edu-item au d3">
+        <div class="edu-course">Aprenda SAP — Treinamento para Iniciantes</div>
+        <div class="edu-inst">Capacitação SAP</div>
+        <div class="edu-period">IBM Training</div>
+      </div>
+      <div class="card edu-item au d4">
+        <div class="edu-course">Educação Agile</div>
+        <div class="edu-inst">Metodologias Ágeis</div>
+        <div class="edu-period">IBM Learning</div>
+      </div>
+      <div class="card edu-item au d5">
+        <div class="edu-course">Cybersecurity Fundamentals</div>
+        <div class="edu-inst">Segurança da Informação</div>
+        <div class="edu-period">IBM Learning</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 32px;" class="au d6">
+      <p style="font-size: 14px; color: #7E879B; margin-bottom: 16px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;">Habilidades técnicas</p>
+      <div>
+        <span class="pill highlight">SAP</span>
+        <span class="pill highlight">n8n</span>
+        <span class="pill highlight">Agentes de IA</span>
+        <span class="pill">Automação de Processos</span>
+        <span class="pill">Análise Documental</span>
+        <span class="pill">Gestão de Acessos</span>
+        <span class="pill">Contas a Pagar</span>
+        <span class="pill">Record to Report</span>
+        <span class="pill">Core Banking</span>
+        <span class="pill">Workflows</span>
+        <span class="pill">Conformidade Bancária</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- IDIOMAS -->
+  <section id="idiomas">
+    <div class="gl au"></div>
+    <h2 class="au d1"><span class="gt">Idiomas</span></h2>
+    <div class="lang-grid">
+      <div class="lang-item au d2">
+        <div class="lang-name">Português</div>
+        <div class="lang-level">Nativo</div>
+        <div class="lang-dots">
+          <div class="lang-dot filled"></div>
+          <div class="lang-dot filled"></div>
+          <div class="lang-dot filled"></div>
+          <div class="lang-dot filled"></div>
+          <div class="lang-dot filled"></div>
+        </div>
+      </div>
+      <div class="lang-item au d3">
+        <div class="lang-name">English</div>
+        <div class="lang-level">Básico</div>
+        <div class="lang-dots">
+          <div class="lang-dot filled"></div>
+          <div class="lang-dot filled"></div>
+          <div class="lang-dot"></div>
+          <div class="lang-dot"></div>
+          <div class="lang-dot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato">
+    <div class="gl au"></div>
+    <h2 class="au d1">Entre em <span class="gt">Contato</span></h2>
+    <div class="contact-grid">
+      <div class="card contact-card au d2">
+        <div class="ct-ic">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div class="ct-info">
+          <div class="ct-lbl">E-mail</div>
+          <div class="ct-val"><a href="mailto:guilherme.godoy1@ibm.com">guilherme.godoy1@ibm.com</a></div>
+        </div>
+      </div>
+      <div class="card contact-card au d3">
+        <div class="ct-ic">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </div>
+        <div class="ct-info">
+          <div class="ct-lbl">LinkedIn</div>
+          <div class="ct-val"><a href="https://linkedin.com/in/guilherme-godoy" target="_blank">linkedin.com/in/guilherme-godoy</a></div>
+        </div>
+      </div>
+      <div class="card contact-card au d4">
+        <div class="ct-ic">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="ct-info">
+          <div class="ct-lbl">Localização</div>
+          <div class="ct-val">Hortolândia, São Paulo — Brasil</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- BOTÕES FLUTUANTES -->
+<button class="print-btn" onclick="doPrint()">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+  Imprimir
+</button>
+<button class="fs-btn" onclick="toggleFs()">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+  Tela cheia
+</button>
+
+<script>
+  // Scroll progress
+  const prog = document.getElementById('prog');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    prog.style.width = pct + '%';
+  });
+
+  // Active TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc a');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        tocLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-40% 0px -40% 0px' });
+  sections.forEach(s => obs.observe(s));
+
+  // Smooth scroll
+  tocLinks.forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Animate on viewport
+  const animObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('in-view');
+    });
+  }, { threshold: .15 });
+  document.querySelectorAll('.au, .as').forEach(el => animObs.observe(el));
+
+  // Radial glow nos cards premium
+  document.querySelectorAll('.cp').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
+      card.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
+    });
+  });
+
+  // Fullscreen
+  function toggleFs() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  // Print
+  function doPrint() { window.print(); }
+</script>
+</body>
+</html>
