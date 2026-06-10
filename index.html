@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guilherme Godoy — Currículo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:      #1a1a1a;
+    --ink-2:    #444;
+    --ink-3:    #777;
+    --rule:     #e0e0e0;
+    --accent:   #1a1a1a;
+    --bg:       #ffffff;
+    --page-w:   760px;
+  }
+
+  html { font-size: 15px; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f4f4f4;
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── PAGE WRAPPER ── */
+  .page {
+    background: var(--bg);
+    max-width: var(--page-w);
+    margin: 48px auto;
+    padding: 64px 60px;
+    box-shadow: 0 2px 24px rgba(0,0,0,.08);
+  }
+
+  /* ── HEADER ── */
+  .header { margin-bottom: 40px; }
+
+  .header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -.03em;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .header .role {
+    font-size: .95rem;
+    font-weight: 500;
+    color: var(--ink-2);
+    margin-bottom: 18px;
+    letter-spacing: .01em;
+  }
+
+  .contact-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    font-size: .8rem;
+    color: var(--ink-3);
+  }
+
+  .contact-bar span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .contact-bar svg {
+    width: 13px;
+    height: 13px;
+    stroke: var(--ink-3);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  /* ── DIVIDER ── */
+  hr {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 32px 0;
+  }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 36px; }
+
+  .section-title {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 20px;
+  }
+
+  /* ── EXPERIENCE ITEM ── */
+  .exp-item { margin-bottom: 28px; }
+  .exp-item:last-child { margin-bottom: 0; }
+
+  .exp-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 3px;
+  }
+
+  .exp-role {
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .exp-period {
+    font-size: .78rem;
+    color: var(--ink-3);
+    white-space: nowrap;
+    padding-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .exp-company {
+    font-size: .82rem;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+
+  .exp-desc {
+    font-size: .85rem;
+    color: var(--ink-2);
+    line-height: 1.65;
+  }
+
+  /* ── BULLET LIST ── */
+  ul.bullets {
+    list-style: none;
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  ul.bullets li {
+    font-size: .85rem;
+    color: var(--ink-2);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.55;
+  }
+
+  ul.bullets li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--ink-3);
+  }
+
+  /* ── SKILLS / PILLS ── */
+  .pill-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pill {
+    font-size: .78rem;
+    font-weight: 500;
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 4px 12px;
+    background: #fafafa;
+  }
+
+  /* ── EDUCATION / COURSES ── */
+  .edu-item { margin-bottom: 16px; }
+  .edu-item:last-child { margin-bottom: 0; }
+
+  .edu-name {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+
+  .edu-sub {
+    font-size: .8rem;
+    color: var(--ink-3);
+  }
+
+  /* ── TWO-COL LAYOUT ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 40px;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: #fff; }
+    .page {
+      margin: 0;
+      padding: 48px 48px;
+      box-shadow: none;
+      max-width: 100%;
+    }
+    .no-print { display: none; }
+    .section { page-break-inside: avoid; }
+    .exp-item { page-break-inside: avoid; }
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 640px) {
+    .page { margin: 0; padding: 40px 28px; box-shadow: none; }
+    .exp-head { flex-direction: column; gap: 2px; }
+    .two-col { grid-template-columns: 1fr; gap: 0; }
+  }
+
+  /* ── PRINT BUTTON ── */
+  .print-bar {
+    max-width: var(--page-w);
+    margin: 0 auto 16px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .btn-print {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Inter', sans-serif;
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    color: var(--ink-2);
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: border-color .2s, color .2s;
+    text-transform: uppercase;
+  }
+
+  .btn-print:hover { border-color: #aaa; color: var(--ink); }
+
+  .btn-print svg {
+    width: 14px; height: 14px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  }
+</style>
+</head>
+<body>
+
+<!-- Print Button -->
+<div class="print-bar no-print">
+  <button class="btn-print" onclick="window.print()">
+    <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    Baixar PDF
+  </button>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Guilherme Godoy</h1>
+    <p class="role">Analista de Processos &amp; Automação · IBM</p>
+    <div class="contact-bar">
+      <span>
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><polyline points="22,6 12,13 2,6"/></svg>
+        guigodoy20@gmail.com
+      </span>
+      <span>
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Monte Mor — São Paulo, Brasil
+      </span>
+      <span>
+        <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        linkedin.com/in/guilherme-godoy
+      </span>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- PERFIL -->
+  <div class="section">
+    <p class="section-title">Perfil</p>
+    <p class="exp-desc">
+      Analista com experiência em operações bancárias de grande porte, atuando em projetos estratégicos para Santander e Itaú dentro da IBM. Sólida vivência em análise de pagamentos via SAP, gestão de poderes e acessos, abertura e encerramento de contas PF e varejo, além do uso crescente de ferramentas de automação com Inteligência Artificial para otimização de processos que antes eram realizados manualmente. Perfil colaborativo, orientado à qualidade e à eficiência operacional.
+    </p>
+  </div>
+
+  <hr>
+
+  <!-- EXPERIÊNCIA -->
+  <div class="section">
+    <p class="section-title">Experiência Profissional</p>
+
+    <div class="exp-item">
+      <div class="exp-head">
+        <span class="exp-role">Analista em Poderes — Varejo e PF · Projeto Itaú</span>
+        <span class="exp-period">Abr 2026 — Presente</span>
+      </div>
+      <p class="exp-company">IBM, LTDA — Brasil</p>
+      <p class="exp-desc">
+        Atuação no projeto Itaú com foco na abertura de contas de varejo e PF. Responsável pela gestão de poderes e acessos, manutenção, alimentação e suporte dos sistemas, garantindo conformidade, qualidade das informações e eficiência dos processos operacionais.
+      </p>
+      <ul class="bullets">
+        <li>Análise de documentos e contratos para abertura e encerramento de contas</li>
+        <li>Utilização de ferramentas de IA para triagem e processamento de dados, substituindo processos manuais</li>
+        <li>Suporte contínuo à gestão de acessos e conformidade de informações</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-head">
+        <span class="exp-role">Analista SAP — Pagamentos Imóveis · Projeto Santander</span>
+        <span class="exp-period">Mai 2021 — Abr 2026</span>
+      </div>
+      <p class="exp-company">IBM — Brasil</p>
+      <p class="exp-desc">
+        Responsável por toda a cadeia de análise e lançamento de pagamentos de imóveis do banco Santander, operando como ponta final do processo no sistema SAP.
+      </p>
+      <ul class="bullets">
+        <li>Processamento de pagamentos de taxas, IPTUs, aluguéis e condomínios</li>
+        <li>Análise e organização de comprovantes no sistema interno e externo</li>
+        <li>Contato direto e diário com o cliente, garantindo alinhamento e qualidade das entregas</li>
+        <li>Suporte a mudanças de sistema e adaptação a novos desafios operacionais</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <hr>
+
+  <!-- FORMAÇÃO E CURSOS -->
+  <div class="section">
+    <p class="section-title">Formação &amp; Cursos</p>
+
+    <div class="two-col">
+      <div>
+        <div class="edu-item">
+          <p class="edu-name">Fundamentos do n8n e Agentes de IA</p>
+          <p class="edu-sub">Automação de processos e desenvolvimento de workflows com IA</p>
+        </div>
+        <div class="edu-item">
+          <p class="edu-name">Educação Agile</p>
+          <p class="edu-sub">Metodologias ágeis aplicadas a projetos</p>
+        </div>
+      </div>
+      <div>
+        <div class="edu-item">
+          <p class="edu-name">Cybersecurity</p>
+          <p class="edu-sub">Fundamentos de segurança da informação</p>
+        </div>
+        <div class="edu-item">
+          <p class="edu-name">Aprenda SAP — Treinamento para Iniciantes</p>
+          <p class="edu-sub">Operação e análise no sistema SAP</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr>
+
+  <!-- COMPETÊNCIAS -->
+  <div class="section">
+    <p class="section-title">Competências</p>
+    <div class="pill-group">
+      <span class="pill">SAP</span>
+      <span class="pill">Análise de Pagamentos</span>
+      <span class="pill">Gestão de Poderes e Acessos</span>
+      <span class="pill">Automação com IA</span>
+      <span class="pill">n8n</span>
+      <span class="pill">Abertura de Contas PF</span>
+      <span class="pill">Análise de Contratos</span>
+      <span class="pill">Suporte Operacional</span>
+      <span class="pill">Conformidade Bancária</span>
+      <span class="pill">Metodologias Ágeis</span>
+      <span class="pill">Cybersecurity</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- IDIOMAS -->
+  <div class="section">
+    <p class="section-title">Idiomas</p>
+    <div class="pill-group">
+      <span class="pill">Português — Nativo</span>
+      <span class="pill">Inglês — Básico</span>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+</body>
+</html>
